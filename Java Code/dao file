@@ -1,0 +1,141 @@
+package com.saurabh.servlet_crud_operation.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate; 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.saurabh.servlet_crud_operation.connection.StudentConnection;
+import com.saurabh.servlet_crud_operation.dto.Student;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Persistence;
+
+public class StudentDao { 
+	Connection connection = StudentConnection.getStudentConnection();
+	final String INSERT_DATA = "insert into student(id,name,email,dob,password,gender) value(?,?,?,?,?,?)";
+	final String EMAIL_QUERY = "select * from student where email = ?";
+	final String DISPLAY_ALL_DATA = "select * from student";
+	final String DELETE_BY_ID = "delete from student where id = ?";
+	final String DISPLAY_BY_ID = "select * from student where id = ?";
+	final String UPDATE_BY_ID = "update student set name=?, email=?, dob=?, password=?, gender=? where id = ?";
+	public Student saveStudentDataDao(Student student) {
+		try {
+			PreparedStatement ps = connection.prepareStatement(INSERT_DATA);
+			ps.setInt(1, student.getId());
+			ps.setString(2, student.getName());
+			ps.setString(3, student.getEmail());
+			ps.setObject(4, student.getDob());
+			ps.setString(5, student.getPassword());
+			ps.setString(6, student.getGender());
+			ps.execute();
+			return student;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Student getStudentDataByEmailDao(String studEmail) {
+		try {
+			PreparedStatement ps = connection.prepareStatement(EMAIL_QUERY);
+			ps.setString(1, studEmail);
+			ResultSet set = ps.executeQuery();
+			if(set.next()) {
+				String email = set.getString("email");
+				String password = set.getString("password");
+				Student student = new Student(email, password);
+				return student;
+			}
+			else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Student> getAllStudentDataDao(){
+		try {
+			PreparedStatement ps = connection.prepareStatement(DISPLAY_ALL_DATA);
+			ResultSet set = ps.executeQuery();
+			List<Student> students = new ArrayList<Student>();
+			while(set.next()) {
+				int id = set.getInt("id");
+				String name = set.getString("name");
+				String email = set.getString("email");
+				String dob = set.getString("dob");
+				String password = set.getString("password");
+				String gender = set.getString("gender");
+				Student student = new Student(id, name, email, LocalDate.parse(dob), password, gender);
+				students.add(student);
+			}
+			return students;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public boolean deleteStudentDataByIdDao(int studId) {
+		try {
+			PreparedStatement ps = connection.prepareStatement(DELETE_BY_ID);
+			ps.setInt(1, studId);
+			ps.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public Student getStudentDataByIdDao(int id) {
+		try {
+			PreparedStatement ps = connection.prepareStatement(DISPLAY_BY_ID);
+			ps.setInt(1, id);
+			ResultSet set = ps.executeQuery();
+			if(set.next()) {
+				int id1 = set.getInt("id");
+				String name = set.getString("name");
+				String email = set.getString("email");
+				String dob = set.getString("dob");
+				String password = set.getString("password");
+				String gender = set.getString("gender");
+				Student student = new Student(id1, name, email, LocalDate.parse(dob), password, gender);
+				return student;
+			}
+			else {
+				return null;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public boolean updateStudentDataDao(Student student) {
+		try {
+			PreparedStatement ps = connection.prepareStatement(UPDATE_BY_ID);
+			ps.setInt(6, student.getId());
+			ps.setString(1,student.getName());
+			ps.setString(2, student.getEmail());
+			ps.setObject(3, student.getDob());
+			ps.setString(4, student.getPassword());
+			ps.setString(5, student.getGender());
+			ps.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+}
