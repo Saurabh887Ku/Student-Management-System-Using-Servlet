@@ -1,0 +1,38 @@
+<%@page import="com.saurabh.servlet_crud_operation.dto.Student"%>
+<%@page import="com.saurabh.servlet_crud_operation.dao.StudentDao"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+		int id = Integer.parseInt(request.getParameter("id"));
+		StudentDao dao = new StudentDao();
+		Student student = dao.getStudentDataByIdDao(id);
+	%>
+	<h1>EDIT-FORM</h1>
+	<div>
+		<form action="updateStudent" method="get">
+			<label>STUDENT-ID</label><br>
+			<input type = "number" name="id" value="<%=student.getId()%>"><br>
+			<label>STUDENT-NAME</label><br>
+			<input type = "text" name="name" value="<%=student.getName()%>"><br>
+			<label>STUDENT-EMAIL</label><br>
+			<input type = "email" name="email" value="<%=student.getEmail()%>"><br>
+			<label>STUDENT-DOB</label><br>
+			<input type = "date" name="dob" value="<%=student.getDob()%>"><br>
+			<label>STUDENT-PASSWORD</label><br>
+			<input type = "password" name="password" value="<%=student.getPassword()%>"><br>
+			<label>STUDENT-GENDER</label><br>
+			<input type="radio" name = "gender" value="male" <%if(student.getGender().equalsIgnoreCase("male")){ %>checked="checked"<%} %>>Male
+			<input type="radio" name = "gender" value="female" <%if(student.getGender().equalsIgnoreCase("female")){ %>checked="checked"<%} %>>Female
+			<input type="radio" name = "gender" value="other" <%if(student.getGender().equalsIgnoreCase("other")){ %>checked="checked"<%} %>>Other<br>
+			<input type="submit" value = "update"><br>
+		</form>
+	</div>
+</body>
+</html>
