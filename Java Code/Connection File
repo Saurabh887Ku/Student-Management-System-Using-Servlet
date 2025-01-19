@@ -1,0 +1,19 @@
+package com.saurabh.servlet_crud_operation.connection;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import com.mysql.cj.jdbc.Driver;
+
+public class StudentConnection {
+	public static Connection getStudentConnection() {
+		try {
+			Driver driver = new Driver();
+			DriverManager.registerDriver(driver);
+			return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/servlet", "root", "Sk887@ku");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+}
