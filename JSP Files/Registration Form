@@ -1,0 +1,37 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>STUDENT-REGISTRATION</title>
+</head>
+<body>
+	<%
+		String message = (String)request.getAttribute("msg");
+		if(message != null){
+	%>
+		<h1 style='color:red'><%=message %></h1>
+	<%} %>
+	<h1>REGISTRATION FORM</h1>
+	<div>
+		<form action="userRegistration" method = "get">
+			<label>STUDENT-ID</label><br>
+			<input type = "number" placeholder = "enter student id" name = "id"><br>
+			<label>STUDENT-NAME</label><br>
+			<input type = "text" placeholder = "enter student name" name = "name"><br>
+			<label>STUDENT-EMAIL</label><br>
+			<input type = "email" placeholder = "enter student email" name = "email"><br>
+			<label>STUDENT-DOB</label><br>
+			<input type = "date" placeholder = "enter student dob" name = "dob"><br>
+			<label>STUDENT-PASSWORD</label><br>
+			<input type = "password" placeholder = "enter student password" name = "password"><br>
+			<label>STUDENT-GENDER</label><br>
+			<input type = "radio" name = "gender" value = "male">Male
+			<input type = "radio" name = "gender" value = "female">Female
+			<input type = "radio" name = "gender" value = "other">Others<br>
+			<input type = "submit" value = "register">
+		</form>
+	</div>
+</body>
+</html>
